@@ -20,6 +20,7 @@ inputs:
   sonarcloud_organization:
     description: "Organization Name on Sonarcloud "
     required: false
+    default: 'ikmdev'
   sonarcloud_sources:
     description: "source folder"
     required: false
@@ -73,5 +74,5 @@ runs:
       env:
         SONAR_TOKEN: ${{ inputs.sonarcloud_token }}
         SONAR_HOST_URL: ${{ inputs.sonarcloud_host_url }}
-        SONAR_ORGANIZATION: ${{ inputs.sonarcloud_organization }} 
+        SONAR_ORGANIZATION: ${{ igithub.repository_owner }} 
     
