@@ -1,0 +1,66 @@
+name: Maven Code Coverage Action
+description: A composite action to ensure that code coverage is utilized
+
+
+#Inputs
+inputs:
+  branch_name:
+    description: "Branch Name"
+    required: false
+  sonarcloud_token:
+    description: "Token For Sonarcloud"
+    required: false
+  sonarcloud_host_url:     
+    description: "Sonarcloud Host URL"
+    required: false
+  sonarcloud_organization:
+    description: "Organization Name on Sonarcloud "
+    required: false
+  sonarcloud_sources:
+    description: "source folder"
+    required: false   
+  sonarcloud_projectKey:
+    description: "Sonar project key"
+    required: false
+  sonarcloud_coverage_jacoco_xmlReportPaths:
+    description: "Jacoco reports path"
+    required: false
+  sonarcloud_java_binaries:
+    description: "Java binaries folder"
+    required: false         
+  sonarcloud_tests:
+    description: "Java test folder"
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Cache Maven packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-maven-
+
+    - name: SonarCloud Build and analyze
+      if: github.repository_owner == 'ikmdev'
+      shell: bash  
+      run: | 
+           ./mvnw verify sonar:sonar \
+             --batch-mode \
+             -Dsonar.sonarcloud_token=${{ inputs.sonarcloud_token }} \
+             -Dsonar.organization=${{ inputs.sonarcloud_organization }} \
+             -Dsonar.sonarcloud_host_url=${{ inputs.sonarcloud_host_url }} \
+             -Dsonar.sources=${{ inputs.sonarcloud_sources }} \
+             -Dsonar.projectKey=${{ inputs.sonarcloud_projectKey }} \
+             -Dsonar.coverage.jacoco.xmlReportPaths=${{ inputs.sonarcloud_coverage_jacoco_xmlReportPaths }} \
+             -Dsonar.java.binaries=${{ inputs.sonarcloud_java_binaries }} \
+             -Dsonar.tests=${{ inputs.sonarcloud_tests }}
+      env:
+        SONAR_TOKEN: ${{ inputs.sonarcloud_token }}
+        SONAR_HOST_URL: ${{ inputs.sonarcloud_host_url }}
+        SONAR_ORGANIZATION: ${{ inputs.sonarcloud_organization }} 
+    
