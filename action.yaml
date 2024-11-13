@@ -13,24 +13,29 @@ inputs:
   sonarcloud_host_url:     
     description: "Sonarcloud Host URL"
     required: false
+    default: 'https://sonarcloud.io/'
   sonarcloud_organization:
     description: "Organization Name on Sonarcloud "
     required: false
   sonarcloud_sources:
     description: "source folder"
-    required: false   
+    required: false
+    default: 'src/main/java'
   sonarcloud_projectKey:
     description: "Sonar project key"
     required: false
   sonarcloud_coverage_jacoco_xmlReportPaths:
     description: "Jacoco reports path"
     required: false
+    default: 'target/site/jacoco/jacoco.xml'
   sonarcloud_java_binaries:
     description: "Java binaries folder"
-    required: false         
+    required: false      
+    default: 'target/classes'   
   sonarcloud_tests:
     description: "Java test folder"
     required: false
+    default: 'src/test/java'
 
 runs:
   using: "composite"
