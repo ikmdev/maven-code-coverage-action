@@ -57,10 +57,10 @@ runs:
            ./mvnw verify sonar:sonar \
              --batch-mode \
              -Dsonar.sonarcloud_token=${{ inputs.sonarcloud_token }} \
-             -Dsonar.organization=${{ inputs.sonarcloud_organization }} \
+             -Dsonar.organization=${{ github.repository_owner }} \
              -Dsonar.sonarcloud_host_url=${{ inputs.sonarcloud_host_url }} \
              -Dsonar.sources=${{ inputs.sonarcloud_sources }} \
-             -Dsonar.projectKey=${{ inputs.sonarcloud_projectKey }} \
+             -Dsonar.projectKey=${{ github.repository_owner }}_${{ github.event.repository.name }} \
              -Dsonar.coverage.jacoco.xmlReportPaths=${{ inputs.sonarcloud_coverage_jacoco_xmlReportPaths }} \
              -Dsonar.java.binaries=${{ inputs.sonarcloud_java_binaries }} \
              -Dsonar.tests=${{ inputs.sonarcloud_tests }}
