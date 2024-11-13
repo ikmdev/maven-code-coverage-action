@@ -74,5 +74,5 @@ runs:
       env:
         SONAR_TOKEN: ${{ inputs.sonarcloud_token }}
         SONAR_HOST_URL: ${{ inputs.sonarcloud_host_url }}
-        SONAR_ORGANIZATION: ${{ igithub.repository_owner }} 
+        SONAR_ORGANIZATION: ${{ github.repository_owner }} 
     
