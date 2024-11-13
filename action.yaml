@@ -7,6 +7,9 @@ inputs:
   branch_name:
     description: "Branch Name"
     required: false
+  repo_name: 
+    description: "Repo Name"
+    required: true
   sonarcloud_token:
     description: "Token For Sonarcloud"
     required: false
@@ -42,13 +45,16 @@ runs:
   steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
+      with:
+        repository: ${{inputs.repo_name}}
+        ref: ${{inputs.branch_name}}
 
-    # - name: Cache Maven packages
-    #   uses: actions/cache@v3
-    #   with:
-    #     path: ~/.m2/repository
-    #     key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-    #     restore-keys: ${{ runner.os }}-maven-
+    - name: Cache Maven packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-maven-
 
     - name: SonarCloud Build and analyze
       if: github.repository_owner == 'ikmdev'
@@ -64,8 +70,8 @@ runs:
              -Dsonar.coverage.jacoco.xmlReportPaths=${{ inputs.sonarcloud_coverage_jacoco_xmlReportPaths }} \
              -Dsonar.java.binaries=${{ inputs.sonarcloud_java_binaries }} \
              -Dsonar.tests=${{ inputs.sonarcloud_tests }}
-      # env:
-      #   SONAR_TOKEN: ${{ inputs.sonarcloud_token }}
-      #   SONAR_HOST_URL: ${{ inputs.sonarcloud_host_url }}
-      #   SONAR_ORGANIZATION: ${{ inputs.sonarcloud_organization }} 
+      env:
+        SONAR_TOKEN: ${{ inputs.sonarcloud_token }}
+        SONAR_HOST_URL: ${{ inputs.sonarcloud_host_url }}
+        SONAR_ORGANIZATION: ${{ inputs.sonarcloud_organization }} 
     
