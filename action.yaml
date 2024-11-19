@@ -58,7 +58,7 @@ runs:
         restore-keys: ${{ runner.os }}-maven-
 
     - name: SonarCloud Build and analyze
-      # if: github.repository_owner == 'ikmdev'
+      if: github.repository_owner == 'ikmdev'
       shell: bash  
       run: | 
            ./mvnw verify sonar:sonar \
