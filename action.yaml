@@ -59,6 +59,7 @@ runs:
 
     - name: Maven Build
       # if: github.event.repository.name != 'reasoner-test-data' && (inputs.branch_name == 'main' || inputs.branch_name == 'master')
+      shell: bash
       run: |
           mvn clean install -U \
             --batch-mode \
