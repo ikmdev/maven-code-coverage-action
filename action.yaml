@@ -40,6 +40,10 @@ inputs:
     description: "Java test folder"
     required: false
     default: 'src/test/java'
+  java_version:
+    description: "Java Version"
+    required: false 
+    default: "23"
 
 runs:
   using: "composite"
@@ -49,6 +53,12 @@ runs:
       with:
         repository: ${{inputs.repo_name}}
         ref: ${{inputs.branch_name}}
+
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: ${{inputs.java_version}}
 
     - name: Cache Maven packages
       uses: actions/cache@v3
